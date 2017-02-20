@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import GameBoard from './components/game_board';
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class App extends Component {
           <h2>Conway&#39;s Game of Life</h2>
         </div>
         <div>
-          Game board goes here
+          <GameBoard />
         </div>
       </div>
     );
