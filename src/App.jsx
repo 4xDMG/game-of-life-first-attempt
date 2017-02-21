@@ -6,7 +6,19 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = { gameBoardSize: { cols: 100, rows: 50 } };
+  }
+
+  generateGameBoardArr(cols, rows) {
+    const gameBoardArrTemp = [];
+    for (let i = 0; i < rows; i += 1) {
+      gameBoardArrTemp.push([]);
+      for (let j = 0; j < cols; j += 1) {
+        gameBoardArrTemp[i].push(' ');
+      }
+    }
+    console.log('working');
+    return gameBoardArrTemp;
   }
 
   render() {
@@ -16,7 +28,9 @@ class App extends Component {
           <h2>Conway&#39;s Game of Life</h2>
         </div>
         <div>
-          <GameBoard />
+          <GameBoard
+            GameBoardArr={() => this.generateGameBoardArr(this.state.gameBoardSize.cols, this.state.gameBoardSize.rows)}
+          />
         </div>
       </div>
     );

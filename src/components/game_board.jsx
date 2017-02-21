@@ -1,26 +1,36 @@
 import React, { Component } from 'react';
 
 export default class GameBoard extends Component {
+  static generateGameBoardCol() {
+    return <td>asfdg</td>;
+  }
+
   constructor(props) {
     super(props);
 
-    this.state = { gameBoardSize: { cols: 100, rows: 50 }, gameBoardArr: [] };
-
-    this.generateGameBoardArr(this.state.gameBoardSize.cols, this.state.gameBoardSize.rows);
+    this.state = { gameBoardArr: this.props.GameBoardArr };
   }
 
-  generateGameBoardArr(cols, rows) {
-    let gameBoardArrTemp = [];
-    for (var i = 0; i < rows; i += 1) {
-      gameBoardArrTemp.push([]);
-      for (var j = 0; j < cols; j += 1) {
-        gameBoardArrTemp[i].push(' ');
-      }
-    }
-    this.setState(state..., gameBoardArr: gameBoardArrTemp);
+  // generateGameBoardArr used to sit here. Trying to pass it as props from App.
+
+  generateGameBoard() {
+    console.log('gengb');
+    this.state.gameBoardArr.map(function () {
+      return (
+        <tbody>{this.generateGameBoardRow()}</tbody>
+      );
+    });
+  }
+
+  generateGameBoardRow() {
+    return <tr> {() => this.generateGameBoardCol()} </tr>;
   }
 
   render() {
-    return <p>hi</p>;
+    return (
+      <table>
+        {this.generateGameBoard()}
+      </table>
+    );
   }
 }
