@@ -17,11 +17,13 @@ class App extends Component {
         gameBoardArrTemp[i].push(' ');
       }
     }
-    console.log('working');
     return gameBoardArrTemp;
   }
 
   render() {
+    const cols = this.state.gameBoardSize.cols;
+    const rows = this.state.gameBoardSize.rows;
+    const GameBoardArr = this.generateGameBoardArr(cols, rows);
     return (
       <div className="App">
         <div className="App-header">
@@ -29,7 +31,7 @@ class App extends Component {
         </div>
         <div>
           <GameBoard
-            GameBoardArr={() => this.generateGameBoardArr(this.state.gameBoardSize.cols, this.state.gameBoardSize.rows)}
+            GameBoardArr={GameBoardArr}
           />
         </div>
       </div>

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 export default class GameBoard extends Component {
-  static generateGameBoardCol() {
+  /* static generateGameBoardCol() {
     return <td>asfdg</td>;
-  }
+  } */
 
   constructor(props) {
     super(props);
@@ -14,16 +14,15 @@ export default class GameBoard extends Component {
   // generateGameBoardArr used to sit here. Trying to pass it as props from App.
 
   generateGameBoard() {
-    console.log('gengb');
-    this.state.gameBoardArr.map(function () {
-      return (
-        <tbody>{this.generateGameBoardRow()}</tbody>
-      );
-    });
+    return <tbody>{this.generateGameBoardRow()}</tbody>;
   }
 
   generateGameBoardRow() {
-    return <tr> {() => this.generateGameBoardCol()} </tr>;
+    return <tr>{this.generateGameBoardCol()}</tr>;
+  }
+
+  generateGameBoardCol() {
+    return <td>aaa</td>;
   }
 
   render() {
