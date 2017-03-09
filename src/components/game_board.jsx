@@ -45,13 +45,68 @@ export default class GameBoard extends Component {
   }
 
   checkGameBoard() {
-    console.log('checking');
     const stateHolder = this.state;
     const tempGameBoardArr = this.state.gameBoardArr;
-    for (var i in tempGameBoardArr) {
-      for (var k in tempGameBoardArr[i]) {
-        if (tempGameBoardArr[i][k] === 'old') {
-          tempGameBoardArr[i][k] = 'empty';
+    const newGameBoardArr = this.state.gameBoardArr;
+
+    function indexToCheck(arr, index, prior) {
+      if (prior) {
+        if (parseInt(index, 10) - 1 >= 0) {
+          return parseInt(index, 10) - 1;
+        }
+        return arr.length - 1;
+      }
+      if (parseInt(index, 10) + 1 < arr.length) {
+        return parseInt(index, 10) + 1;
+      }
+      return 0;
+    }
+
+    for (let i in tempGameBoardArr) {
+      for (let k in tempGameBoardArr[i]) {
+        let neighbourCount = 0;
+
+        const currentCell = tempGameBoardArr[i][k];
+        const currentRow = parseInt(i, 10);
+        const currentCol = parseInt(k, 10);
+        const priorRow = indexToCheck(tempGameBoardArr, i, true);
+        const laterRow = indexToCheck(tempGameBoardArr, i, false);
+        const priorCol = indexToCheck(tempGameBoardArr[i], k, true);
+        const laterCol = indexToCheck(tempGameBoardArr[i], k, false);
+
+        // Check all cells surrounding current cell to get neighbour count.
+        if (currentCell === 'old') {
+          if (tempGameBoardArr[priorRow][priorCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[priorRow][currentCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[priorRow][laterCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[currentRow][priorCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[currentRow][laterCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[laterRow][priorCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[laterRow][currentCol] === 'old') {
+            neighbourCount += 1;
+          }
+          if (tempGameBoardArr[laterRow][laterCol] === 'old') {
+            neighbourCount += 1;
+          }
+        }
+
+        // Determine if cell lives, dies or reproduces.
+        if (neighbourCount < 2 || neighbourCount > 3) {
+          newGameBoardArr[currentRow][currentCol] = 'empty';
+        } else if (neighbourCount === 3) {
+          
         }
       }
     }
