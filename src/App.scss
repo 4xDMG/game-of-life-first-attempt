@@ -10,7 +10,9 @@
 }
 
 table {
-  background-color: red;
+  margin: auto;
+  margin-top: 20px;
+  border-collapse: collapse;
 }
 
 td {
@@ -18,6 +20,14 @@ td {
   width: 5px;
   border: 1px solid black;
   margin: 0px;
+}
+
+.empty {
+  background-color: #9999cc;
+}
+
+.old {
+  background-color: #990000;
 }
 
 p {

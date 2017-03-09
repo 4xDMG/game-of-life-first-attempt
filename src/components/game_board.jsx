@@ -5,8 +5,13 @@ export default class GameBoard extends Component {
     super(props);
 
     const gameBoardArr = this.props.GameBoardArr;
-    this.state = { gameBoardArr };
-    console.log(this.state.gameBoardArr[0]);
+    this.state = { gameBoardArr, generationCount: 0, running: true };
+
+    this.checkGameBoard = this.checkGameBoard.bind(this);
+  }
+
+  componentDidMount() {
+    this.startGameBoardInterval();
   }
 
   generateGameBoard() {
@@ -29,21 +34,55 @@ export default class GameBoard extends Component {
   }
 
   generateGameBoardCol(colIndex, rowIndex) {
-    const col = colIndex.toString();
-    const row = rowIndex.toString();
-    const key = `${row}:${col}`;
-    return <td key={key}></td>;
+    const key = `${rowIndex.toString()}:${colIndex.toString()}`;
+    return <td key={key} className={this.state.gameBoardArr[rowIndex][colIndex]} />;
+  }
+
+  checkGameBoard() {
+    const stateHolder = this.state;
+    const tempGameBoardArr = this.state.gameBoardArr;
+    for (var i in tempGameBoardArr) {
+      for (var k in tempGameBoardArr[i]) {
+        if (tempGameBoardArr[i][k] === 'old') {
+          tempGameBoardArr[i][k] = 'empty';
+        }
+      }
+    }
+    stateHolder.gameBoardArr = tempGameBoardArr;
+    stateHolder.generationCount += 1;
+    console.log(stateHolder);
+    this.setState(stateHolder);
+  }
+
+  startGameBoardInterval() {
+    if (this.state.running) {
+      setInterval(this.checkGameBoard, 2000);
+    }
+  }
+
+  stopGameBoardInterval() {
+    if (this.state.running) {
+
+    }
   }
 
   render() {
     return (
-      <table>
-        {this.generateGameBoard()}
-      </table>
+      <div>
+        <h2>Generation: {this.state.generationCount}</h2>
+        <table>
+          {this.generateGameBoard()}
+        </table>
+        <button onClick={this.stopGameBoardInterval}>Stop</button>
+      </div>
     );
   }
 }
 
 GameBoard.propTypes = {
-  GameBoardArr: React.PropTypes.arrayOf.isRequired,
+  GameBoardArr: React.PropTypes.arrayOf(
+    React.PropTypes.arrayOf(
+      React.PropTypes.string.isRequired)
+    .isRequired)
+  .isRequired,
 };
