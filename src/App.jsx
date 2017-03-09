@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { gameBoardSize: { cols: 100, rows: 50 } };
+    this.state = { gameBoardSize: { cols: 100, rows: 50 }, initialGameCellStates: ['old', 'empty'] };
   }
 
   generateGameBoardArr(cols, rows) {
@@ -14,7 +14,7 @@ class App extends Component {
     for (let i = 0; i < rows; i += 1) {
       gameBoardArrTemp.push([]);
       for (let j = 0; j < cols; j += 1) {
-        gameBoardArrTemp[i].push(' ');
+        gameBoardArrTemp[i].push(this.state.initialGameCellStates[Math.floor(Math.random() * 2)]);
       }
     }
     return gameBoardArrTemp;

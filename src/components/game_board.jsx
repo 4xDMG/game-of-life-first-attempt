@@ -1,28 +1,38 @@
 import React, { Component } from 'react';
 
 export default class GameBoard extends Component {
-  /* static generateGameBoardCol() {
-    return <td>asfdg</td>;
-  } */
-
   constructor(props) {
     super(props);
 
-    this.state = { gameBoardArr: this.props.GameBoardArr };
+    const gameBoardArr = this.props.GameBoardArr;
+    this.state = { gameBoardArr };
+    console.log(this.state.gameBoardArr[0]);
   }
-
-  // generateGameBoardArr used to sit here. Trying to pass it as props from App.
 
   generateGameBoard() {
-    return <tbody>{this.generateGameBoardRow()}</tbody>;
+    return (
+      <tbody>
+        {this.state.gameBoardArr.map(
+          (currElement, rowIndex) => this.generateGameBoardRow(rowIndex))
+        }
+      </tbody>);
   }
 
-  generateGameBoardRow() {
-    return <tr>{this.generateGameBoardCol()}</tr>;
+  generateGameBoardRow(rowIndex) {
+    return (
+      <tr key={rowIndex}>
+        {this.state.gameBoardArr[rowIndex].map(
+          (currElement, colIndex) =>
+            this.generateGameBoardCol(colIndex, rowIndex))
+        }
+      </tr>);
   }
 
-  generateGameBoardCol() {
-    return <td>aaa</td>;
+  generateGameBoardCol(colIndex, rowIndex) {
+    const col = colIndex.toString();
+    const row = rowIndex.toString();
+    const key = `${row}:${col}`;
+    return <td key={key}></td>;
   }
 
   render() {
@@ -33,3 +43,7 @@ export default class GameBoard extends Component {
     );
   }
 }
+
+GameBoard.propTypes = {
+  GameBoardArr: React.PropTypes.arrayOf.isRequired,
+};

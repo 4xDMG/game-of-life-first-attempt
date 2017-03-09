@@ -10,5 +10,11 @@
 table {
   background-color: red; }
 
+td {
+  height: 5px;
+  width: 5px;
+  border: 1px solid black;
+  margin: 0px; }
+
 p {
   color: red; }
