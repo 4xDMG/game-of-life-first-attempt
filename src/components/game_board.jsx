@@ -5,13 +5,19 @@ export default class GameBoard extends Component {
     super(props);
 
     const gameBoardArr = this.props.GameBoardArr;
-    this.state = { gameBoardArr, generationCount: 0, running: true };
+    this.state = { gameBoardArr, generationCount: 0 };
 
     this.checkGameBoard = this.checkGameBoard.bind(this);
+    this.stopGameBoardInterval = this.stopGameBoardInterval.bind(this);
   }
 
   componentDidMount() {
-    this.startGameBoardInterval();
+    // this.startGameBoardInterval();
+    this.startGameBoardInterval = setInterval(this.checkGameBoard, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.startGameBoardInterval);
   }
 
   generateGameBoard() {
@@ -50,20 +56,17 @@ export default class GameBoard extends Component {
     }
     stateHolder.gameBoardArr = tempGameBoardArr;
     stateHolder.generationCount += 1;
-    console.log(stateHolder);
     this.setState(stateHolder);
   }
 
-  startGameBoardInterval() {
+  /* startGameBoardInterval() {
     if (this.state.running) {
       setInterval(this.checkGameBoard, 2000);
     }
-  }
+  } */
 
   stopGameBoardInterval() {
-    if (this.state.running) {
-
-    }
+    clearInterval(this.startGameBoardInterval);
   }
 
   render() {
