@@ -12,7 +12,6 @@ export default class GameBoard extends Component {
   }
 
   componentDidMount() {
-    // this.startGameBoardInterval();
     this.startGameBoardInterval = setInterval(this.checkGameBoard, 1000);
   }
 
@@ -58,12 +57,6 @@ export default class GameBoard extends Component {
     stateHolder.generationCount += 1;
     this.setState(stateHolder);
   }
-
-  /* startGameBoardInterval() {
-    if (this.state.running) {
-      setInterval(this.checkGameBoard, 2000);
-    }
-  } */
 
   stopGameBoardInterval() {
     clearInterval(this.startGameBoardInterval);
