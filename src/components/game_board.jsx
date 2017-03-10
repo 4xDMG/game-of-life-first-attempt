@@ -10,6 +10,7 @@ export default class GameBoard extends Component {
     this.checkGameBoard = this.checkGameBoard.bind(this);
     this.startGameBoardInterval = this.startGameBoardInterval.bind(this);
     this.stopGameBoardInterval = this.stopGameBoardInterval.bind(this);
+    this.clearGameBoard = this.clearGameBoard.bind(this);
   }
 
   componentDidMount() {
@@ -41,10 +42,12 @@ export default class GameBoard extends Component {
 
   generateGameBoardCol(colIndex, rowIndex) {
     const key = `${rowIndex.toString()}:${colIndex.toString()}`;
-    return <td 
-      key={key} 
-      className={this.state.gameBoardArr[rowIndex][colIndex]} 
-    />;
+    return (
+      <td
+        key={key}
+        className={this.state.gameBoardArr[rowIndex][colIndex]}
+        onClick={() => this.createNewCell(key)}
+      />);
   }
 
   checkGameBoard() {
@@ -115,12 +118,27 @@ export default class GameBoard extends Component {
     this.setState(stateHolder);
   }
 
+  createNewCell(key) {
+    const keyArr = key.split(':');
+    const stateHolder = this.state;
+    stateHolder.gameBoardArr[keyArr[0]][keyArr[1]] = 'old';
+    this.setState(stateHolder);
+  }
+
   startGameBoardInterval() {
     this.generationInterval = setInterval(this.checkGameBoard, 200);
   }
 
   stopGameBoardInterval() {
     clearInterval(this.generationInterval);
+  }
+
+  clearGameBoard() {
+    clearInterval(this.generationInterval);
+    const stateHolder = this.state;
+    stateHolder.generationCount = 0;
+    stateHolder.gameBoardArr = this.props.GenerateGameBoardArr(false);
+    this.setState(stateHolder);
   }
 
   render() {
@@ -132,6 +150,7 @@ export default class GameBoard extends Component {
         </table>
         <button onClick={this.startGameBoardInterval}>Start</button>
         <button onClick={this.stopGameBoardInterval}>Stop</button>
+        <button onClick={this.clearGameBoard}>Clear</button>
       </div>
     );
   }
@@ -143,4 +162,5 @@ GameBoard.propTypes = {
       React.PropTypes.string.isRequired)
     .isRequired)
   .isRequired,
+  GenerateGameBoardArr: React.PropTypes.func.isRequired,
 };

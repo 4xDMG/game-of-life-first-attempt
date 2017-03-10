@@ -6,24 +6,33 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { gameBoardSize: { cols: 50, rows: 30 }, initialGameCellStates: ['old', 'empty', 'empty'] };
+    this.state = { gameBoardSize: { cols: 10, rows: 10 }, initialGameCellStates: ['old', 'empty', 'empty'] };
   }
 
-  generateGameBoardArr(cols, rows) {
+  componentWillMount() {
+    this.generateGameBoardArr(true);
+  }
+
+  generateGameBoardArr(
+    random,
+    cols = this.state.gameBoardSize.cols,
+    rows = this.state.gameBoardSize.rows) {
     const gameBoardArrTemp = [];
     for (let i = 0; i < rows; i += 1) {
       gameBoardArrTemp.push([]);
       for (let j = 0; j < cols; j += 1) {
-        gameBoardArrTemp[i].push(this.state.initialGameCellStates[Math.floor(Math.random() * 3)]);
+        if (random) {
+          gameBoardArrTemp[i].push(this.state.initialGameCellStates[Math.floor(Math.random() * 3)]);
+        } else {
+          gameBoardArrTemp[i].push('empty');
+        }
       }
     }
+
     return gameBoardArrTemp;
   }
 
   render() {
-    const cols = this.state.gameBoardSize.cols;
-    const rows = this.state.gameBoardSize.rows;
-    const GameBoardArr = this.generateGameBoardArr(cols, rows);
     return (
       <div className="App">
         <div className="App-header">
@@ -31,7 +40,8 @@ class App extends Component {
         </div>
         <div>
           <GameBoard
-            GameBoardArr={GameBoardArr}
+            GameBoardArr={this.generateGameBoardArr(true)}
+            GenerateGameBoardArr={() => this.generateGameBoardArr()}
           />
         </div>
       </div>
