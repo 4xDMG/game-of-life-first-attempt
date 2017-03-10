@@ -41,7 +41,10 @@ export default class GameBoard extends Component {
 
   generateGameBoardCol(colIndex, rowIndex) {
     const key = `${rowIndex.toString()}:${colIndex.toString()}`;
-    return <td key={key} className={this.state.gameBoardArr[rowIndex][colIndex]} />;
+    return <td 
+      key={key} 
+      className={this.state.gameBoardArr[rowIndex][colIndex]} 
+    />;
   }
 
   checkGameBoard() {
@@ -65,8 +68,6 @@ export default class GameBoard extends Component {
     for (let i in tempGameBoardArr) {
       for (let k in tempGameBoardArr[i]) {
         let neighbourCount = 0;
-
-        const currentCell = tempGameBoardArr[i][k];
         const currentRow = parseInt(i, 10);
         const currentCol = parseInt(k, 10);
         const priorRow = indexToCheck(tempGameBoardArr, i, true);
@@ -75,38 +76,37 @@ export default class GameBoard extends Component {
         const laterCol = indexToCheck(tempGameBoardArr[i], k, false);
 
         // Check all cells surrounding current cell to get neighbour count.
-        if (currentCell === 'old') {
-          if (tempGameBoardArr[priorRow][priorCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[priorRow][currentCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[priorRow][laterCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[currentRow][priorCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[currentRow][laterCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[laterRow][priorCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[laterRow][currentCol] === 'old') {
-            neighbourCount += 1;
-          }
-          if (tempGameBoardArr[laterRow][laterCol] === 'old') {
-            neighbourCount += 1;
-          }
+
+        if (tempGameBoardArr[priorRow][priorCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[priorRow][currentCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[priorRow][laterCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[currentRow][priorCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[currentRow][laterCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[laterRow][priorCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[laterRow][currentCol] === 'old') {
+          neighbourCount += 1;
+        }
+        if (tempGameBoardArr[laterRow][laterCol] === 'old') {
+          neighbourCount += 1;
         }
 
         // Determine if cell lives, dies or reproduces.
         if (neighbourCount < 2 || neighbourCount > 3) {
           newGameBoardArr[currentRow][currentCol] = 'empty';
         } else if (neighbourCount === 3) {
-          
+          newGameBoardArr[currentRow][currentCol] = 'old';
         }
       }
     }
@@ -116,7 +116,7 @@ export default class GameBoard extends Component {
   }
 
   startGameBoardInterval() {
-    this.generationInterval = setInterval(this.checkGameBoard, 1000);
+    this.generationInterval = setInterval(this.checkGameBoard, 200);
   }
 
   stopGameBoardInterval() {
