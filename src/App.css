@@ -3,7 +3,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 70px;
   padding: 20px;
   color: yellow; }
 
@@ -20,7 +20,20 @@ td {
   margin: 0px; }
 
 button {
-  margin: 20px; }
+  margin: 20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  border: none; }
+
+.startBtn {
+  background-color: #00ff00; }
+
+.stopBtn {
+  background-color: #cc3300; }
+
+.clearBtn {
+  background-color: #cccccc; }
 
 .empty {
   background-color: #9999cc; }

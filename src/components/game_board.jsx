@@ -5,7 +5,7 @@ export default class GameBoard extends Component {
     super(props);
 
     const gameBoardArr = this.props.GameBoardArr;
-    this.state = { gameBoardArr, generationCount: 0 };
+    this.state = { gameBoardArr, generationCount: 0, running: false };
 
     this.checkGameBoard = this.checkGameBoard.bind(this);
     this.startGameBoardInterval = this.startGameBoardInterval.bind(this);
@@ -69,16 +69,14 @@ export default class GameBoard extends Component {
       return 0;
     }
 
-    for (let i in tempGameBoardArr) {
+    tempGameBoardArr.forEach((rowArr, currentRow) => {
       newGameBoardArr.push([]);
-      for (let k in tempGameBoardArr[i]) {
+      rowArr.forEach((cell, currentCol) => {
         let neighbourCount = 0;
-        const currentRow = parseInt(i, 10);
-        const currentCol = parseInt(k, 10);
-        const priorRow = indexToCheck(tempGameBoardArr, i, true);
-        const laterRow = indexToCheck(tempGameBoardArr, i, false);
-        const priorCol = indexToCheck(tempGameBoardArr[i], k, true);
-        const laterCol = indexToCheck(tempGameBoardArr[i], k, false);
+        const priorRow = indexToCheck(tempGameBoardArr, currentRow, true);
+        const laterRow = indexToCheck(tempGameBoardArr, currentRow, false);
+        const priorCol = indexToCheck(tempGameBoardArr[currentRow], currentCol, true);
+        const laterCol = indexToCheck(tempGameBoardArr[currentRow], currentCol, false);
 
         // Check all cells surrounding current cell to get neighbour count.
         if (tempGameBoardArr[priorRow][priorCol] === 'old') {
@@ -107,16 +105,17 @@ export default class GameBoard extends Component {
         }
         // Determine if cell lives, dies or reproduces.
         if (neighbourCount < 2 || neighbourCount > 3) {
-          newGameBoardArr[i].push('empty');
+          newGameBoardArr[currentRow].push('empty');
         } else if (neighbourCount === 3) {
-          newGameBoardArr[i].push('old');
+          newGameBoardArr[currentRow].push('old');
         } else if (neighbourCount === 2 && tempGameBoardArr[currentRow][currentCol] === 'old') {
-          newGameBoardArr[i].push('old');
+          newGameBoardArr[currentRow].push('old');
         } else {
-          newGameBoardArr[i].push('empty');
+          newGameBoardArr[currentRow].push('empty');
         }
-      }
-    }
+      });
+    });
+
     stateHolder.gameBoardArr = newGameBoardArr;
     stateHolder.generationCount += 1;
     this.setState(stateHolder);
@@ -130,11 +129,19 @@ export default class GameBoard extends Component {
   }
 
   startGameBoardInterval() {
-    this.generationInterval = setInterval(this.checkGameBoard, 200);
+    const stateHolder = this.state;
+    if (!this.state.running) {
+      stateHolder.running = true;
+      this.generationInterval = setInterval(this.checkGameBoard, 200);
+    }
+    this.setState(stateHolder);
   }
 
   stopGameBoardInterval() {
     clearInterval(this.generationInterval);
+    const stateHolder = this.state;
+    stateHolder.running = false;
+    this.setState(stateHolder);
   }
 
   clearGameBoard() {
@@ -142,6 +149,7 @@ export default class GameBoard extends Component {
     const stateHolder = this.state;
     stateHolder.generationCount = 0;
     stateHolder.gameBoardArr = this.props.GenerateGameBoardArr(false);
+    stateHolder.running = false;
     this.setState(stateHolder);
   }
 
@@ -149,12 +157,25 @@ export default class GameBoard extends Component {
     return (
       <div>
         <h2>Generation: {this.state.generationCount}</h2>
+        <h4>Click below to add your own cells!</h4>
         <table>
           {this.generateGameBoard()}
         </table>
-        <button onClick={this.startGameBoardInterval}>Start</button>
-        <button onClick={this.stopGameBoardInterval}>Stop</button>
-        <button onClick={this.clearGameBoard}>Clear</button>
+        <button 
+          className="startBtn"
+          onClick={this.startGameBoardInterval}>
+          Start
+        </button>
+        <button 
+          className="stopBtn"
+          onClick={this.stopGameBoardInterval}>
+          Stop
+        </button>
+        <button 
+          className="clearBtn"
+          onClick={this.clearGameBoard}>
+          Clear
+        </button>
       </div>
     );
   }
