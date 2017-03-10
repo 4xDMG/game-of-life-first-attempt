@@ -52,9 +52,10 @@ export default class GameBoard extends Component {
 
   checkGameBoard() {
     const stateHolder = this.state;
-    const tempGameBoardArr = this.state.gameBoardArr;
-    const newGameBoardArr = this.state.gameBoardArr;
+    const tempGameBoardArr = stateHolder.gameBoardArr;
+    const newGameBoardArr = [];
 
+    // Assigns values for surrounding cells.
     function indexToCheck(arr, index, prior) {
       if (prior) {
         if (parseInt(index, 10) - 1 >= 0) {
@@ -69,6 +70,7 @@ export default class GameBoard extends Component {
     }
 
     for (let i in tempGameBoardArr) {
+      newGameBoardArr.push([]);
       for (let k in tempGameBoardArr[i]) {
         let neighbourCount = 0;
         const currentRow = parseInt(i, 10);
@@ -79,7 +81,6 @@ export default class GameBoard extends Component {
         const laterCol = indexToCheck(tempGameBoardArr[i], k, false);
 
         // Check all cells surrounding current cell to get neighbour count.
-
         if (tempGameBoardArr[priorRow][priorCol] === 'old') {
           neighbourCount += 1;
         }
@@ -104,16 +105,19 @@ export default class GameBoard extends Component {
         if (tempGameBoardArr[laterRow][laterCol] === 'old') {
           neighbourCount += 1;
         }
-
         // Determine if cell lives, dies or reproduces.
         if (neighbourCount < 2 || neighbourCount > 3) {
-          newGameBoardArr[currentRow][currentCol] = 'empty';
+          newGameBoardArr[i].push('empty');
         } else if (neighbourCount === 3) {
-          newGameBoardArr[currentRow][currentCol] = 'old';
+          newGameBoardArr[i].push('old');
+        } else if (neighbourCount === 2 && tempGameBoardArr[currentRow][currentCol] === 'old') {
+          newGameBoardArr[i].push('old');
+        } else {
+          newGameBoardArr[i].push('empty');
         }
       }
     }
-    stateHolder.gameBoardArr = tempGameBoardArr;
+    stateHolder.gameBoardArr = newGameBoardArr;
     stateHolder.generationCount += 1;
     this.setState(stateHolder);
   }

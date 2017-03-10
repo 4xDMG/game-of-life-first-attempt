@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { gameBoardSize: { cols: 10, rows: 10 }, initialGameCellStates: ['old', 'empty', 'empty'] };
+    this.state = { gameBoardSize: { cols: 50, rows: 30 }, initialGameCellStates: ['old', 'empty', 'empty'] };
   }
 
   componentWillMount() {
